@@ -127,7 +127,7 @@ include 'admin/db_connect.php';
             <div class="row">
                 <?php
                 $fpath = 'admin/assets/uploads';
-                $alumni = $conn->query("SELECT a.*,c.course,Concat(a.lastname,', ',a.firstname,' ',a.middlename) as name from alumnus_bio a inner join courses c on c.id = a.course_id order by Concat(a.lastname,', ',a.firstname,' ',a.middlename) asc");
+                $alumni = $conn->query("SELECT a.*,c.course,Concat(a.lastname,', ',a.firstname,' ',a.middlename) as name from alumnus_bio a inner join courses c on c.id = a.course_id WHERE a.status = 1  order by Concat(a.lastname,', ',a.firstname,' ',a.middlename) asc");
                 while ($row = $alumni->fetch_assoc()):
                     ?>
                     <div class="col-md-4 item">
@@ -168,16 +168,19 @@ include 'admin/db_connect.php';
                                             <br>
                                             <?php
                                             $macb = $row['macb'];
-                                            $query = "SELECT * FROM links WHERE macb='$macb'";
+                                            $query = "SELECT * FROM alumnus_bio ";
                                             $result = mysqli_query($conn, $query);
-                                            if (mysqli_num_rows($result) > 0) {
+                                            // echo (mysqli_num_rows($result));
+                                            // echo ( $link);
                                                 $link_row = mysqli_fetch_assoc($result);
-                                                $link = $link_row['link'] . "?macb=" . $macb; // Cộng thêm macb vào đường link
+                                                $lin = $link_row['link'];
+                                                $link = $lin."?macb=" . $macb; // Cộng thêm macb vào đường link
                                                 ?>
-                                                <button class="btn btn-primary" id="view-more-button"
-                                                    onclick="window.location.href='<?php echo $link ?>'">Xem thêm</button>
+                                            <!-- <button class="btn btn-primary" id="view-more-button"
+                                                onclick="window.location.href='<?php echo $link ?>'">Xem thêm</button> -->
+                                                <a class="btn btn-primary" id="view-more-button" target="_blank" href="<?php echo $link ?>">Xem thêm</a>
                                                 <?php
-                                            }
+                                            
                                             ?>
                                         </div>
                                     </div>
